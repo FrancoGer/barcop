@@ -1,6 +1,6 @@
 #include <Stepper.h> //Incluir libreria
 //#include <AccelStepper.h>
-#define home 12
+#define home 3
 double stepsPerRevolution = 2048;
 Stepper myStepper(stepsPerRevolution, 8, 10, 9, 11);  // Inversión de pines para que la biblioteca funcione
 //AccelStepper stepper(stepsPerRevolution, 8, 10, 9, 11);  // Inversión de pines para que la biblioteca funcione  <- Para utilizar la libreria AccelStepper.h
@@ -73,6 +73,7 @@ void loop() {
   }
 
   // Lee el carácter enviado por el puerto serie
+  Serial.println("ingrese I para empezar el ciclo");
   char c = Serial.read();
 //_________
 
@@ -131,22 +132,31 @@ void movimiento(){
   homingrealizado=1;
 }*/
 void homing() {
-    // Mueve el motor hacia adelante hasta que se active el sensor de límite
-    while(!digitalRead(home)) {
-      Serial.println(digitalRead(home));
-    // Mueve el motor un paso hacia adelante
-      if(digitalRead(home) == 0){
-        for(int i=0;i<vueltasmotorAtras;i++){
-          if(digitalRead(home) == 0){
-            Serial.println(digitalRead(home));
-            Serial.println("Realizando Homing");
-            myStepper.step(-stepsPerRevolution);
-          }
-        }
-      }
-    }
+  // Mueve el motor hacia adelante hasta que se active el sensor de límite
+  int pasos = 0;
+  const int maxPasos = 8; // Número máximo de pasos
+  int temp = 0;
 
-    // Detiene el movimiento del motor
-    myStepper.step(0);
-    homingrealizado=1;
+  while (digitalRead(home) != 1 && pasos < maxPasos && temp != 1) {
+    // Imprime el estado del sensor de límite
+    Serial.println(digitalRead(home));
+    temp == digitalRead(home);
+    Serial.println(temp);
+
+    // Imprime un mensaje de que se está realizando el homing
+    Serial.println("Realizando Homing");
+
+    // Mueve el motor un paso
+    myStepper.step(-stepsPerRevolution);
+
+    // Incrementa el contador de pasos
+    pasos++;
+
+    delay(500);
+  }
+
+  // Detiene el movimiento del motor
+  myStepper.step(0);
+
+  homingrealizado=1;
 }
