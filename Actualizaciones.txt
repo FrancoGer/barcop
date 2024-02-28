@@ -1,0 +1,4 @@
+-Cambio de Microprocesador por uno con 2 nucleos para un mejor y correcto funcionamiento del carro
+-Agregar boton para la funcion Homing
+-Actualizar Diseño del codigo para obtener un mayor rendimiento del mismo. (ahorro de memoria y velocidad de trabajo) 
+-Planeacion,diseño y creacion del Dispenser.
